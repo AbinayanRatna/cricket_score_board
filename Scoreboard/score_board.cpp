@@ -52,7 +52,8 @@ public:
     }
 };
 
-class Batsmen{
+class Batsmen
+{
 public:
     string team_name;
     string player_name;
@@ -62,7 +63,8 @@ public:
     int runs_gave;
 };
 
-class Bowler{
+class Bowler
+{
 public:
     string team_name;
     string player_name;
@@ -73,6 +75,7 @@ public:
 };
 
 int show_overs(int number_of_overs,Cricket_team t3,Cricket_team t4,Cricket_match match);
+int show_overs_2(int number_of_overs,Cricket_team t3,Cricket_team t4,Cricket_match match,int target_runs);
 void target_reveal(int number_of_overs,int target,Cricket_team t3,Cricket_team t4);
 void show_batter_details();
 void show_bowler_details();
@@ -90,6 +93,7 @@ int main()
     if(k<=30)
     {
         cout<<t1.team_name<<" won the toss and chose batting.";
+        cout<<endl<<endl<<"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"<<endl<<endl;
         t1.isBatting=true;
         t2.isBatting=false;
         t1.isBowling=false;
@@ -98,6 +102,7 @@ int main()
     else
     {
         cout<<t2.team_name<<" won the toss and chose batting.";
+        cout<<endl<<endl<<"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"<<endl<<endl;
         t2.isBatting=true;
         t1.isBatting=false;
         t2.isBowling=false;
@@ -135,28 +140,39 @@ int main()
     if(t1.isBatting==true&&t2.isBatting==false)
     {
         cout<<endl<<t1.team_name<<" is batting."<<endl;
-        target_match2=show_overs(match.returnNoOfOvers(),t1,t2,match);
-        if(target_match1>target_match2){
+        cout<<endl<<endl<<"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"<<endl<<endl;
+        target_match2=show_overs_2(match.returnNoOfOvers(),t1,t2,match,target_match1);
+        if(target_match1>target_match2)
+        {
             cout<<t2.team_name<<" won the match"<<endl;
-        }else if(target_match1==target_match2){
+        }
+        else if(target_match1==target_match2)
+        {
             cout<<"The match become draw."<<endl;
-        }else{
+        }
+        else
+        {
             cout<<t1.team_name<<" won the match"<<endl;
         }
     }
     else if(t2.isBatting==true&&t1.isBatting==false)
     {
         cout<<endl<<t2.team_name<<" is batting."<<endl;
-        target_match2=show_overs(match.returnNoOfOvers(),t2,t1,match);
-        if(target_match1>target_match2){
+        cout<<endl<<endl<<"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"<<endl<<endl;
+        target_match2=show_overs_2(match.returnNoOfOvers(),t2,t1,match,target_match1);
+        if(target_match1>target_match2)
+        {
             cout<<t1.team_name<<" won the match"<<endl;
-        }else if(target_match1==target_match2){
+        }
+        else if(target_match1==target_match2)
+        {
             cout<<"The match become draw."<<endl;
-        }else{
+        }
+        else
+        {
             cout<<t2.team_name<<" won the match"<<endl;
         }
     }
-
 
     return 0;
 }
@@ -178,6 +194,7 @@ int show_overs(int number_of_overs,Cricket_team t3,Cricket_team t4,Cricket_match
             {
                 cout<<"1 ";
                 sum_runs_per_ball+=1;
+                total_runs+=sum_runs_per_ball;
             }
             else if(k>35 && k<=55)
             {
@@ -187,39 +204,132 @@ int show_overs(int number_of_overs,Cricket_team t3,Cricket_team t4,Cricket_match
             {
                 cout<<"wde ";
                 sum_runs_per_ball+=1;
+                total_runs+=sum_runs_per_ball;
                 j--;
             }
             else if(k>70 && k<=80)
             {
                 cout<<"6 ";
                 sum_runs_per_ball+=6;
+                total_runs+=sum_runs_per_ball;
             }
             else if(k>80 && k<=90)
             {
                 cout<<"4 ";
                 sum_runs_per_ball+=4;
+                total_runs+=sum_runs_per_ball;
             }
             else
             {
                 cout<<"wkt ";
                 sum_wickets_per_ball++;
+                total_wickets+=sum_wickets_per_ball;
+                if(total_wickets==10)
+                {
+                    break;
+                }
+
             }
-            total_runs+=sum_runs_per_ball;
-            total_wickets+=sum_wickets_per_ball;
+            // total_runs+=sum_runs_per_ball;
+            //total_wickets+=sum_wickets_per_ball;
         }
         t3.total_runs=total_runs;
         t4.total_wickets=total_wickets;
         cout<<endl<<"total runs taken by "<<t3.team_name<<" at the end of "<<i<<" over : "<<t3.total_runs<<endl;
-        cout<<endl<<"total wickets taken by "<<t4.team_name<<" at the end of "<<i<<" over : "<<t4.total_wickets<<endl;
+        cout<<"total wickets taken by "<<t4.team_name<<" at the end of "<<i<<" over : "<<t4.total_wickets<<endl<<endl;
 
-        if(total_wickets==10)
+
+    }
+    return t3.total_runs+1;
+}
+
+int show_overs_2(int number_of_overs,Cricket_team t3,Cricket_team t4,Cricket_match match,int target_runs)
+{
+    int total_runs=0;
+    int total_wickets=0;
+    for(int i=1; i<=number_of_overs; i++)
+    {
+        cout<<i<<" over : "<<endl;
+
+        for(int j=1; j<=6; j++)
         {
-            break;
+            int k=(rand()%100)+1;
+            int sum_runs_per_ball=0;
+            int sum_wickets_per_ball=0;
+            if(k<=35)
+            {
+                cout<<"1 ";
+                sum_runs_per_ball+=1;
+                total_runs+=sum_runs_per_ball;
+                if(target_runs<total_runs)
+                {
+                    break;
+                }
+            }
+            else if(k>35 && k<=55)
+            {
+                cout<<"0 ";
+            }
+            else if(k>55 && k<=70)
+            {
+                cout<<"wde ";
+                sum_runs_per_ball+=1;
+                total_runs+=sum_runs_per_ball;
+                if(target_runs<total_runs)
+                {
+                    break;
+                }
+                j--;
+            }
+            else if(k>70 && k<=80)
+            {
+                cout<<"6 ";
+                sum_runs_per_ball+=6;
+                total_runs+=sum_runs_per_ball;
+                if(target_runs<total_runs)
+                {
+                    break;
+                }
+            }
+            else if(k>80 && k<=90)
+            {
+                cout<<"4 ";
+                sum_runs_per_ball+=4;
+                total_runs+=sum_runs_per_ball;
+                if(target_runs<total_runs)
+                {
+                    break;
+                }
+            }
+            else
+            {
+                cout<<"wkt ";
+                sum_wickets_per_ball++;
+                total_wickets+=sum_wickets_per_ball;
+                if(total_wickets==10)
+                {
+                    break;
+                }
+            }
+
+        }
+        t3.total_runs=total_runs;
+        t4.total_wickets=total_wickets;
+        if(target_runs>=total_runs)
+        {
+            cout<<endl<<"total runs taken by "<<t3.team_name<<" at the end of "<<i<<" over : "<<t3.total_runs<<endl;
+            cout<<"total wickets taken by "<<t4.team_name<<" at the end of "<<i<<" over : "<<t4.total_wickets<<endl<<endl;
+        }
+        else
+        {
+            cout<<endl<<"total runs taken by "<<t3.team_name<<" at the end of match : "<<t3.total_runs<<endl;
+            cout<<"total wickets taken by "<<t4.team_name<<" at the end of match : "<<t4.total_wickets<<endl<<endl;
         }
 
     }
     return t3.total_runs+1;
 }
+
 
 void target_reveal(int number_of_overs,int target,Cricket_team t3,Cricket_team t4)
 {

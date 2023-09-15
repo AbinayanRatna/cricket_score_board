@@ -14,6 +14,8 @@ public:
     bool isBowling;
     int total_runs;
     int total_wickets;
+    string playerName[11];
+
 public:
     void get_teamName(string firstOrSecond)
     {
@@ -52,25 +54,25 @@ public:
     }
 };
 
-class Batsmen
+class Bowler
 {
 public:
-    string team_name;
-    string player_name;
+    Cricket_team team_name;
+    string playerName[11];
     bool isBowling;
     int wickets_taken;
     int overs_thrown;
     int runs_gave;
+
 };
 
-class Bowler
+class Batsmen
 {
 public:
     string team_name;
-    string player_name;
-    bool isBatting;
+    string player_Name;
     bool isOut;
-    int overs_bat;
+    //int overs_bat;
     int runs_taken;
 };
 
@@ -84,15 +86,30 @@ int main()
 {
     Cricket_match match;
     Cricket_team t1,t2;
+    Batsmen battingNow;
+
+    cout<<endl;
     match.get_numberOfOvers();
     t1.get_teamName("first");
     t2.get_teamName("second");
+
+    for(int i=0; i<11; i++)
+    {
+        t1.playerName[i]=t1.team_name+ " player "+to_string(i+1);
+    }
+
+    for(int i=0; i<11; i++)
+    {
+        t2.playerName[i]=t2.team_name+ " player "+to_string(i+1);
+    }
+
     system("cls");
     srand(time(0));
     int k = (rand()%60)+1;
     if(k<=30)
     {
         cout<<t1.team_name<<" won the toss and chose batting.";
+        // battingNow.team_name=t1.team_name;
         cout<<endl<<endl<<"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"<<endl<<endl;
         t1.isBatting=true;
         t2.isBatting=false;
@@ -102,6 +119,7 @@ int main()
     else
     {
         cout<<t2.team_name<<" won the toss and chose batting.";
+        //battingNow.team_name=t2.team_name;
         cout<<endl<<endl<<"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"<<endl<<endl;
         t2.isBatting=true;
         t1.isBatting=false;
@@ -132,14 +150,12 @@ int main()
         t2.isBowling=true;
         t1.isBowling=false;
     }
-    cout<<"target match 1 is : "<<target_match1<<endl;
-    // system("cls");
-    cout<<endl;   //
-    cout<<endl;  //
-    cout<<"Target is "<<match.target<<" runs in "<<match.returnNoOfOvers()<<" overs."<<endl;
+    //cout<<"Target is "<<match.target<<" runs in "<<match.returnNoOfOvers()<<" overs."<<endl;
+
     if(t1.isBatting==true&&t2.isBatting==false)
     {
         cout<<endl<<t1.team_name<<" is batting."<<endl;
+        //battingNow.team_name=t1.team_name;
         cout<<endl<<endl<<"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"<<endl<<endl;
         target_match2=show_overs_2(match.returnNoOfOvers(),t1,t2,match,target_match1);
         if(target_match1>target_match2)
@@ -158,6 +174,7 @@ int main()
     else if(t2.isBatting==true&&t1.isBatting==false)
     {
         cout<<endl<<t2.team_name<<" is batting."<<endl;
+        // battingNow.team_name=t2.team_name;
         cout<<endl<<endl<<"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"<<endl<<endl;
         target_match2=show_overs_2(match.returnNoOfOvers(),t2,t1,match,target_match1);
         if(target_match1>target_match2)
@@ -179,12 +196,19 @@ int main()
 
 int show_overs(int number_of_overs,Cricket_team t3,Cricket_team t4,Cricket_match match)
 {
+    int noOfBowlers;
+    cout<<"enter number of bowlers in team : "<<endl;
+    cin>>noOfBowlers;
+    int bowlers[noOfBowlers];
     int total_runs=0;
     int total_wickets=0;
+
+    //int batsmenOrder=0;
     for(int i=1; i<=number_of_overs; i++)
     {
         cout<<i<<" over : "<<endl;
-
+        int runsByBowler=0;
+        for()
         for(int j=1; j<=6; j++)
         {
             int k=(rand()%100)+1;

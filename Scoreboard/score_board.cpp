@@ -4,6 +4,17 @@
 
 using namespace std;
 
+struct BowlerClass
+{
+    int bowlerIndex;
+    string bowlerName;
+    int TotalRunsGave;
+    int TotalWicketstaken;
+    float totalBallsBowled;
+    struct BowlerClass *next;
+};
+typedef struct BowlerClass * Bowler;
+Bowler firstBowler=new BowlerClass;
 
 
 class Cricket_team
@@ -54,17 +65,7 @@ public:
     }
 };
 
-class Bowler
-{
-public:
-    Cricket_team team_name;
-    string playerName[11];
-    bool isBowling;
-    int wickets_taken;
-    int overs_thrown;
-    int runs_gave;
 
-};
 
 class Batsmen
 {
@@ -86,7 +87,7 @@ int main()
 {
     Cricket_match match;
     Cricket_team t1,t2;
-    Batsmen battingNow;
+    //Batsmen battingNow;
 
     cout<<endl;
     match.get_numberOfOvers();
@@ -197,27 +198,67 @@ int main()
 int show_overs(int number_of_overs,Cricket_team t3,Cricket_team t4,Cricket_match match)
 {
     int noOfBowlers;
-    cout<<"enter number of bowlers in team : "<<endl;
+    firstBowler=NULL;
+    cout<<"enter number of bowlers in team 1: "<<endl;
     cin>>noOfBowlers;
-    int bowlers[noOfBowlers];
     int total_runs=0;
     int total_wickets=0;
-
-    //int batsmenOrder=0;
+    Bowler checkPtr=new BowlerClass;
+    Bowler ptr=new BowlerClass;
+    ptr=NULL;
+    checkPtr=NULL;
     for(int i=1; i<=number_of_overs; i++)
     {
+        int sum_runs_per_over;
+        Bowler newBowler=new BowlerClass;
+        newBowler->bowlerIndex=NULL;
+        if(firstBowler==NULL)
+        {
+            firstBowler=newBowler;
+            newBowler->bowlerIndex=1;
+            newBowler->bowlerName= "1-Bowler ( "+t4.team_name+"team )";
+        }
+        else
+        {
+
+            ptr=firstBowler;
+            while(ptr->next!=NULL)
+            {
+                ptr=ptr->next;
+            }
+
+            if(ptr->bowlerIndex < noOfBowlers)
+            {
+                ptr->next=newBowler;
+                newBowler->bowlerIndex = ptr->bowlerIndex+1;
+                int index=newBowler->bowlerIndex;
+                newBowler->bowlerName=to_string(index)+ "-Bowler ( "+t4.team_name+"team )";
+            }
+            else
+            {
+                if(checkPtr==NULL)
+                {
+                    checkPtr=firstBowler;
+                }
+
+            }
+
+        }
         cout<<i<<" over : "<<endl;
-        int runsByBowler=0;
-        for()
+        sum_runs_per_over=0;
+        int sum_wickets_per_over=0;
+
         for(int j=1; j<=6; j++)
         {
             int k=(rand()%100)+1;
             int sum_runs_per_ball=0;
+
             int sum_wickets_per_ball=0;
             if(k<=35)
             {
                 cout<<"1 ";
                 sum_runs_per_ball+=1;
+                sum_runs_per_over+=sum_runs_per_ball;
                 total_runs+=sum_runs_per_ball;
             }
             else if(k>35 && k<=55)
@@ -228,6 +269,7 @@ int show_overs(int number_of_overs,Cricket_team t3,Cricket_team t4,Cricket_match
             {
                 cout<<"wde ";
                 sum_runs_per_ball+=1;
+                sum_runs_per_over+=sum_runs_per_ball;
                 total_runs+=sum_runs_per_ball;
                 j--;
             }
@@ -235,12 +277,14 @@ int show_overs(int number_of_overs,Cricket_team t3,Cricket_team t4,Cricket_match
             {
                 cout<<"6 ";
                 sum_runs_per_ball+=6;
+                sum_runs_per_over+=sum_runs_per_ball;
                 total_runs+=sum_runs_per_ball;
             }
             else if(k>80 && k<=90)
             {
                 cout<<"4 ";
                 sum_runs_per_ball+=4;
+                sum_runs_per_over+=sum_runs_per_ball;
                 total_runs+=sum_runs_per_ball;
             }
             else
@@ -248,15 +292,45 @@ int show_overs(int number_of_overs,Cricket_team t3,Cricket_team t4,Cricket_match
                 cout<<"wkt ";
                 sum_wickets_per_ball++;
                 total_wickets+=sum_wickets_per_ball;
+                sum_wickets_per_over++;
                 if(total_wickets==10)
                 {
                     break;
                 }
 
             }
-            // total_runs+=sum_runs_per_ball;
-            //total_wickets+=sum_wickets_per_ball;
+
         }
+        if(checkPtr==NULL)
+        {
+            newBowler -> TotalRunsGave = sum_runs_per_over;
+            newBowler->totalBallsBowled=1;
+            newBowler->TotalWicketstaken=sum_wickets_per_over;
+            cout<<endl<<"now bowling : "<<newBowler->bowlerName<<endl;
+            cout<<"total runs gave by this bowler : "<<newBowler->TotalRunsGave<<endl;
+            cout<<"total overs by this bowler : "<<newBowler->totalBallsBowled<<endl<<endl;
+            cout<<"total wickets taken by this bowler : "<<newBowler->TotalWicketstaken<<endl<<endl;
+
+        }
+        else
+        {
+            checkPtr->TotalRunsGave = checkPtr->TotalRunsGave+sum_runs_per_over;
+            checkPtr->totalBallsBowled+=1;
+            checkPtr->TotalWicketstaken+=sum_wickets_per_over;
+            cout<<endl<<"now bowling : "<<checkPtr->bowlerName<<endl;
+            cout<<"total runs gave by this bowler : "<<checkPtr->TotalRunsGave<<endl;
+            cout<<"total overs by this bowler : "<<checkPtr->totalBallsBowled<<endl<<endl;
+            cout<<"total wickets taken by this bowler : "<<checkPtr->TotalWicketstaken<<endl<<endl;
+            if(checkPtr->bowlerIndex >=noOfBowlers)
+            {
+                checkPtr=firstBowler;
+            }
+            else
+            {
+                checkPtr=checkPtr->next;
+            }
+        }
+
         t3.total_runs=total_runs;
         t4.total_wickets=total_wickets;
         cout<<endl<<"total runs taken by "<<t3.team_name<<" at the end of "<<i<<" over : "<<t3.total_runs<<endl;
@@ -264,6 +338,8 @@ int show_overs(int number_of_overs,Cricket_team t3,Cricket_team t4,Cricket_match
 
 
     }
+    delete checkPtr;
+    firstBowler=NULL;
     return t3.total_runs+1;
 }
 
@@ -271,8 +347,57 @@ int show_overs_2(int number_of_overs,Cricket_team t3,Cricket_team t4,Cricket_mat
 {
     int total_runs=0;
     int total_wickets=0;
+
+    int noOfBowlers;
+    firstBowler=NULL;
+    cout<<"enter number of bowlers in team 2: "<<endl;
+    cin>>noOfBowlers;
+    Bowler checkPtr=new BowlerClass;
+
+    checkPtr=NULL;
+
     for(int i=1; i<=number_of_overs; i++)
     {
+         int sum_runs_per_over=0;
+        Bowler newBowler=new BowlerClass;
+        newBowler->bowlerIndex=NULL;
+        if(firstBowler==NULL)
+        {
+            firstBowler=newBowler;
+            newBowler->bowlerIndex=1;
+            newBowler->bowlerName= "1-Bowler ( "+t4.team_name+"team )";
+        }
+        else
+        {
+            Bowler ptr=new BowlerClass;
+            ptr=firstBowler;
+            while(ptr->next!=NULL)
+            {
+                ptr=ptr->next;
+            }
+
+            if(ptr->bowlerIndex < noOfBowlers)
+            {
+                ptr->next=newBowler;
+                newBowler->bowlerIndex = ptr->bowlerIndex+1;
+                int index=newBowler->bowlerIndex;
+                newBowler->bowlerName=to_string(index)+ "-Bowler ( "+t4.team_name+"team )";
+            }
+            else
+            {
+                if(checkPtr==NULL)
+                {
+                    checkPtr=firstBowler;
+                }
+
+            }
+
+        }
+
+        cout<<i<<" over : "<<endl;
+
+        int sum_wickets_per_over=0;
+
         cout<<i<<" over : "<<endl;
 
         for(int j=1; j<=6; j++)
@@ -285,6 +410,7 @@ int show_overs_2(int number_of_overs,Cricket_team t3,Cricket_team t4,Cricket_mat
                 cout<<"1 ";
                 sum_runs_per_ball+=1;
                 total_runs+=sum_runs_per_ball;
+                sum_runs_per_over+=sum_runs_per_ball;
                 if(target_runs<total_runs)
                 {
                     break;
@@ -299,6 +425,7 @@ int show_overs_2(int number_of_overs,Cricket_team t3,Cricket_team t4,Cricket_mat
                 cout<<"wde ";
                 sum_runs_per_ball+=1;
                 total_runs+=sum_runs_per_ball;
+                sum_runs_per_over+=sum_runs_per_ball;
                 if(target_runs<total_runs)
                 {
                     break;
@@ -310,6 +437,7 @@ int show_overs_2(int number_of_overs,Cricket_team t3,Cricket_team t4,Cricket_mat
                 cout<<"6 ";
                 sum_runs_per_ball+=6;
                 total_runs+=sum_runs_per_ball;
+                sum_runs_per_over+=sum_runs_per_ball;
                 if(target_runs<total_runs)
                 {
                     break;
@@ -320,6 +448,7 @@ int show_overs_2(int number_of_overs,Cricket_team t3,Cricket_team t4,Cricket_mat
                 cout<<"4 ";
                 sum_runs_per_ball+=4;
                 total_runs+=sum_runs_per_ball;
+                sum_runs_per_over+=sum_runs_per_ball;
                 if(target_runs<total_runs)
                 {
                     break;
@@ -330,6 +459,7 @@ int show_overs_2(int number_of_overs,Cricket_team t3,Cricket_team t4,Cricket_mat
                 cout<<"wkt ";
                 sum_wickets_per_ball++;
                 total_wickets+=sum_wickets_per_ball;
+                sum_wickets_per_over++;
                 if(total_wickets==10)
                 {
                     break;
@@ -337,6 +467,36 @@ int show_overs_2(int number_of_overs,Cricket_team t3,Cricket_team t4,Cricket_mat
             }
 
         }
+        if(checkPtr==NULL)
+        {
+            newBowler -> TotalRunsGave = sum_runs_per_over;
+            newBowler->totalBallsBowled=1;
+            newBowler->TotalWicketstaken=sum_wickets_per_over;
+            cout<<endl<<"now bowling : "<<newBowler->bowlerName<<endl;
+            cout<<"total runs gave by this bowler : "<<newBowler->TotalRunsGave<<endl;
+            cout<<"total overs by this bowler : "<<newBowler->totalBallsBowled<<endl<<endl;
+            cout<<"total wickets taken by this bowler : "<<newBowler->TotalWicketstaken<<endl<<endl;
+
+        }
+        else
+        {
+            checkPtr->TotalRunsGave = checkPtr->TotalRunsGave+sum_runs_per_over;
+            checkPtr->totalBallsBowled+=1;
+            checkPtr->TotalWicketstaken+=sum_wickets_per_over;
+            cout<<endl<<"now bowling : "<<checkPtr->bowlerName<<endl;
+            cout<<"total runs gave by this bowler : "<<checkPtr->TotalRunsGave<<endl;
+            cout<<"total overs by this bowler : "<<checkPtr->totalBallsBowled<<endl<<endl;
+            cout<<"total wickets taken by this bowler : "<<checkPtr->TotalWicketstaken<<endl<<endl;
+            if(checkPtr->bowlerIndex >=noOfBowlers)
+            {
+                checkPtr=firstBowler;
+            }
+            else
+            {
+                checkPtr=checkPtr->next;
+            }
+        }
+
         t3.total_runs=total_runs;
         t4.total_wickets=total_wickets;
         if(target_runs>=total_runs)

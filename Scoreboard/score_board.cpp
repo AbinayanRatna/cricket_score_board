@@ -531,7 +531,7 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
         if (total_wickets >= 10)
                 {
                     break;
-                }15
+                }
 
     }
 

@@ -32,8 +32,6 @@ public:
 };
 
 typedef class BatsmenClass * Batsmen;
-Batsmen firstBatsmen = new BatsmenClass;
-Batsmen firstBatsmen2 = new BatsmenClass;
 
 class Cricket_team
 {
@@ -83,24 +81,19 @@ public:
     }
 };
 
-int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_match match,int noOfBowlersTeam);
-int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_match match, int target_runs,int noOfBowlersTeam);
+int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_match match);
+int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_match match, int target_runs);
 void target_reveal(int number_of_overs, int target, Cricket_team t3, Cricket_team t4);
 
 int main()
 {
     Cricket_match match;
     Cricket_team t1, t2;
-    int noOfBowlersTeam1,noOfBowlersTeam2;
+
     cout << endl;
     match.get_numberOfOvers();
     t1.get_teamName("first");
     t2.get_teamName("second");
-    cout<<endl<<"Input the number of bowlers in "<<t1.team_name<<" : ";
-    cin>>noOfBowlersTeam1;
-
-    cout<<endl<<"Input the number of bowlers in "<<t2.team_name<<" : "<<endl;
-    cin>>noOfBowlersTeam2;
 
     system("cls");
     srand(time(0));
@@ -108,6 +101,7 @@ int main()
     if (k <= 30)
     {
         cout << t1.team_name << " won the toss and chose batting.";
+        // battingNow.team_name=t1.team_name;
         cout << endl << endl << "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" << endl << endl;
         t1.isBatting = true;
         t2.isBatting = false;
@@ -129,7 +123,7 @@ int main()
     int target_match1, target_match2;
     if (t1.isBatting == true && t2.isBatting == false)
     {
-        target_match1 = show_overs(match.returnNoOfOvers(), t1, t2, match,noOfBowlersTeam2);
+        target_match1 = show_overs(match.returnNoOfOvers(), t1, t2, match);
         target_reveal(match.returnNoOfOvers(), target_match1, t1, t2);
         match.target = target_match1;
         t1.isBatting = false;
@@ -139,7 +133,7 @@ int main()
     }
     else if (t2.isBatting == true && t1.isBatting == false)
     {
-        target_match1 = show_overs(match.returnNoOfOvers(), t2, t1, match,noOfBowlersTeam1);
+        target_match1 = show_overs(match.returnNoOfOvers(), t2, t1, match);
         target_reveal(match.returnNoOfOvers(), target_match1, t2, t1);
         match.target = target_match1;
         t2.isBatting = false;
@@ -152,7 +146,7 @@ int main()
     {
         cout << endl << t1.team_name << " is batting." << endl;
         cout << endl << endl << "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" << endl << endl;
-        target_match2 = show_overs_2(match.returnNoOfOvers(), t1, t2, match, target_match1,noOfBowlersTeam2);
+        target_match2 = show_overs_2(match.returnNoOfOvers(), t1, t2, match, target_match1);
         if (target_match1 > target_match2)
         {
             cout << t2.team_name << " won the match" << endl;
@@ -170,7 +164,7 @@ int main()
     {
         cout << endl << t2.team_name << " is batting." << endl;
         cout << endl << endl << "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" << endl << endl;
-        target_match2 = show_overs_2(match.returnNoOfOvers(), t2, t1, match, target_match1,noOfBowlersTeam1);
+        target_match2 = show_overs_2(match.returnNoOfOvers(), t2, t1, match, target_match1);
         if (target_match1 > target_match2)
         {
             cout << t1.team_name << " won the match" << endl;
@@ -188,26 +182,26 @@ int main()
     return 0;
 }
 
-int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_match match,int noOfBowlersTeam)
+int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_match match)
 {
+    int noOfBowlers;
     firstBowler = NULL;
     Batsmen firstBatsmen = new BatsmenClass;
     Batsmen firstBatsmen2 = new BatsmenClass;
 
+    cout << "enter number of bowlers in team 1: " << endl;
+    cin >> noOfBowlers;
     int total_runs = 0;
     int total_wickets = 0;
     firstBatsmen->next=firstBatsmen2;
 
 
     firstBatsmen = NULL;
-
     Batsmen currentBatsmen_1 = new BatsmenClass;
     Batsmen currentBatsmen_2 = new BatsmenClass;
     Batsmen battingPtr = new BatsmenClass;
 
     Bowler ccheckPtr = new BowlerClass;
-    Bowler ptr = new BowlerClass;
-    ptr = NULL;
     ccheckPtr = NULL;
     Batsmen newBatsmen1 = new BatsmenClass;
     Batsmen newBatsmen2 = new BatsmenClass;
@@ -233,25 +227,35 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
 
         if (firstBowler == NULL)
         {
-            firstBowler = newBowler;
+            
             newBowler -> bowlerIndex = 1;
             newBowler -> bowlerName = "1-Bowler ( " + t4.team_name + " team )";
+            firstBowler = newBowler;
         }
         else
         {
-
+        	//cout<<"test 1"<<endl;
+			Bowler ptr = new BowlerClass;
+            //cout<<"test 2"<<endl;
+            //ptr=NULL;
+            //cout<<"test 3"<<endl;
+            ptr->next = NULL;
+            //cout<<"test 4"<<endl;
             ptr = firstBowler;
+			//cout<<"test 6"<<endl;
+			ptr=firstBowler;
             while (ptr -> next != NULL)
             {
                 ptr = ptr -> next;
             }
 
-            if (ptr -> bowlerIndex < noOfBowlersTeam)
+            if (ptr -> bowlerIndex < noOfBowlers)
             {
                 ptr -> next = newBowler;
                 newBowler -> bowlerIndex = ptr -> bowlerIndex + 1;
                 int index = newBowler -> bowlerIndex;
                 newBowler -> bowlerName = to_string(index) + "-Bowler ( " + t4.team_name + " team )";
+                delete ptr;
             }
             else
             {
@@ -455,6 +459,7 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
 
                     newBatsmen2=battingIn;
                     newBatsmen2->batsmenIndex=index+1;
+                    //cout<<" newBatsmen2->batsmenIndex"<<newBatsmen2->batsmenIndex<<endl;
                     newBatsmen2->batsmenName=to_string(newBatsmen2->batsmenIndex)+ " - Batsman ( " + t4.team_name + " team )";
                     //cout<<"test74"<<endl;
                     newBatsmen1->isPlaying=false;
@@ -504,7 +509,7 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
             cout << "total runs gave by this bowler : " << ccheckPtr -> TotalRunsGave << endl;
             cout << "total overs by this bowler : " << ccheckPtr -> totalBallsBowled << endl;
             cout << "total wickets taken by this bowler : " << ccheckPtr -> TotalWicketstaken << endl << endl;
-            if (ccheckPtr -> bowlerIndex >= noOfBowlersTeam)
+            if (ccheckPtr -> bowlerIndex >= noOfBowlers)
             {
                 ccheckPtr = firstBowler;
             }
@@ -534,12 +539,15 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
 }
 
 
-int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_match match,int target_runs,int noOfBowlersTeam)
+int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_match match,int target_runs)
 {
+    int noOfBowlers;
     firstBowler = NULL;
     Batsmen firstBatsmen = new BatsmenClass;
     Batsmen firstBatsmen2 = new BatsmenClass;
 
+    cout << "enter number of bowlers in team 1: " << endl;
+    cin >> noOfBowlers;
     int total_runs = 0;
     int total_wickets = 0;
     firstBatsmen->next=firstBatsmen2;
@@ -550,6 +558,10 @@ int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_
     Batsmen currentBatsmen_1 = new BatsmenClass;
     Batsmen currentBatsmen_2 = new BatsmenClass;
     Batsmen battingPtr = new BatsmenClass;
+    //Batsmen battingIn = new BatsmenClass;
+
+    // battingIn=NULL;
+    //battingIn->batsmenIndex=0;
 
     Bowler ccheckPtr = new BowlerClass;
     Bowler ptr = new BowlerClass;
@@ -593,7 +605,7 @@ int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_
                 ptr = ptr -> next;
             }
 
-            if (ptr -> bowlerIndex < noOfBowlersTeam)
+            if (ptr -> bowlerIndex < noOfBowlers)
             {
                 ptr -> next = newBowler;
                 newBowler -> bowlerIndex = ptr -> bowlerIndex + 1;
@@ -872,7 +884,7 @@ int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_
             cout << "total runs gave by this bowler : " << ccheckPtr -> TotalRunsGave << endl;
             cout << "total overs by this bowler : " << ccheckPtr -> totalBallsBowled << endl;
             cout << "total wickets taken by this bowler : " << ccheckPtr -> TotalWicketstaken << endl << endl;
-            if (ccheckPtr -> bowlerIndex >= noOfBowlersTeam)
+            if (ccheckPtr -> bowlerIndex >= noOfBowlers)
             {
                 ccheckPtr = firstBowler;
             }

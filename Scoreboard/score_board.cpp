@@ -1,5 +1,6 @@
 #include <iostream>
 #include <ctime>
+#include <unistd.h>
 #include <cstdlib>
 
 using namespace std;
@@ -81,17 +82,16 @@ public:
     }
 };
 
-int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_match match);
-int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_match match, int target_runs);
+int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_match match,int noOfBowlers);
+int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_match match, int target_runs,int noOfBowlers);
 void target_reveal(int number_of_overs, int target, Cricket_team t3, Cricket_team t4);
-void show_batter_details();
-void show_bowler_details();
+
 
 int main()
 {
     Cricket_match match;
     Cricket_team t1, t2;
-
+    int noOfBowlers1,noOfBowlers2;
     cout << endl;
     match.get_numberOfOvers();
     t1.get_teamName("first");
@@ -120,11 +120,16 @@ int main()
 
     }
 
+    cout << "enter number of bowlers in team 1: " << endl;
+    cin >> noOfBowlers1;
+    cout << "enter number of bowlers in team 2: " << endl;
+    cin >> noOfBowlers2;
+
     cout << endl;
     int target_match1, target_match2;
     if (t1.isBatting == true && t2.isBatting == false)
     {
-        target_match1 = show_overs(match.returnNoOfOvers(), t1, t2, match);
+        target_match1 = show_overs(match.returnNoOfOvers(), t1, t2, match,noOfBowlers2);
         target_reveal(match.returnNoOfOvers(), target_match1, t1, t2);
         match.target = target_match1;
         t1.isBatting = false;
@@ -134,7 +139,7 @@ int main()
     }
     else if (t2.isBatting == true && t1.isBatting == false)
     {
-        target_match1 = show_overs(match.returnNoOfOvers(), t2, t1, match);
+        target_match1 = show_overs(match.returnNoOfOvers(), t2, t1, match,noOfBowlers1);
         target_reveal(match.returnNoOfOvers(), target_match1, t2, t1);
         match.target = target_match1;
         t2.isBatting = false;
@@ -147,7 +152,7 @@ int main()
     {
         cout << endl << t1.team_name << " is batting." << endl;
         cout << endl << endl << "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" << endl << endl;
-        target_match2 = show_overs_2(match.returnNoOfOvers(), t1, t2, match, target_match1);
+        target_match2 = show_overs_2(match.returnNoOfOvers(), t1, t2, match, target_match1,noOfBowlers2);
         if (target_match1 > target_match2)
         {
             cout << t2.team_name << " won the match" << endl;
@@ -165,7 +170,7 @@ int main()
     {
         cout << endl << t2.team_name << " is batting." << endl;
         cout << endl << endl << "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" << endl << endl;
-        target_match2 = show_overs_2(match.returnNoOfOvers(), t2, t1, match, target_match1);
+        target_match2 = show_overs_2(match.returnNoOfOvers(), t2, t1, match, target_match1,noOfBowlers1);
         if (target_match1 > target_match2)
         {
             cout << t1.team_name << " won the match" << endl;
@@ -183,22 +188,17 @@ int main()
     return 0;
 }
 
-int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_match match)
+int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_match match,int noOfBowlers)
 {
-    int noOfBowlers;
     firstBowler = NULL;
     Batsmen firstBatsmen = new BatsmenClass;
     Batsmen firstBatsmen2 = new BatsmenClass;
 
-    cout << "enter number of bowlers in team 1: " << endl;
-    cin >> noOfBowlers;
     int total_runs = 0;
     int total_wickets = 0;
     firstBatsmen->next=firstBatsmen2;
 
-
     firstBatsmen = NULL;
-
     Batsmen currentBatsmen_1 = new BatsmenClass;
     Batsmen currentBatsmen_2 = new BatsmenClass;
     Batsmen battingPtr = new BatsmenClass;
@@ -214,8 +214,8 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
 
         newBatsmen1->batsmenIndex=1;
         newBatsmen2->batsmenIndex=2;
-        newBatsmen1->batsmenName="1-Batsman ( " + t4.team_name + " team )";
-        newBatsmen2->batsmenName="2-Batsman ( " + t4.team_name + " team )";
+        newBatsmen1->batsmenName="1 st Batsman ( " + t4.team_name + " team )";
+        newBatsmen2->batsmenName="2 nd Batsman ( " + t4.team_name + " team )";
         firstBatsmen=newBatsmen1;
         firstBatsmen2=newBatsmen2;
         newBatsmen1->isPlaying=true;
@@ -233,7 +233,7 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
         {
             firstBowler = newBowler;
             newBowler -> bowlerIndex = 1;
-            newBowler -> bowlerName = "1-Bowler ( " + t4.team_name + " team )";
+            newBowler -> bowlerName = "1 st Bowler ( " + t4.team_name + " team )";
         }
         else
         {
@@ -249,7 +249,7 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
                 ptr -> next = newBowler;
                 newBowler -> bowlerIndex = ptr -> bowlerIndex + 1;
                 int index = newBowler -> bowlerIndex;
-                newBowler -> bowlerName = to_string(index) + "-Bowler ( " + t4.team_name + " team )";
+                newBowler -> bowlerName = to_string(index) + " th Bowler ( " + t4.team_name + " team )";
             }
             else
             {
@@ -407,8 +407,8 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
 
                     battingIn->batsmenIndex=index + 1;
                     newBatsmen1=battingIn;
-                    newBatsmen2->batsmenName=to_string(newBatsmen2->batsmenIndex) +" - Batsman ( " + t4.team_name + " team )";
-                    newBatsmen1->batsmenName=to_string(newBatsmen1->batsmenIndex) +" - Batsman ( " + t4.team_name + " team )";
+                    newBatsmen2->batsmenName=to_string(newBatsmen2->batsmenIndex) +" th Batsman ( " + t4.team_name + " team )";
+                    newBatsmen1->batsmenName=to_string(newBatsmen1->batsmenIndex) +" th Batsman ( " + t4.team_name + " team )";
                     newBatsmen1->isPlaying=true;
                     newBatsmen2->isPlaying=false;
                     newBatsmen1->isOut=false;
@@ -445,7 +445,7 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
 
                     newBatsmen2=battingIn;
                     newBatsmen2->batsmenIndex=index+1;
-                    newBatsmen2->batsmenName=to_string(newBatsmen2->batsmenIndex)+ " - Batsman ( " + t4.team_name + " team )";
+                    newBatsmen2->batsmenName=to_string(newBatsmen2->batsmenIndex)+ " th Batsman ( " + t4.team_name + " team )";
                     newBatsmen1->isPlaying=false;
                     newBatsmen2->isPlaying=true;
                     newBatsmen1->isOut=false;
@@ -456,8 +456,7 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
 
 
             }
-
-
+            usleep(200000);
 
         }
 
@@ -511,7 +510,7 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
         {
             break;
         }
-
+        usleep(600000);
     }
 
     firstBowler = NULL;
@@ -523,15 +522,12 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
 }
 
 
-int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_match match,int target_runs)
+int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_match match,int target_runs,int noOfBowlers)
 {
-    int noOfBowlers;
     firstBowler = NULL;
     Batsmen firstBatsmen = new BatsmenClass;
     Batsmen firstBatsmen2 = new BatsmenClass;
 
-    cout << "enter number of bowlers in team 1: " << endl;
-    cin >> noOfBowlers;
     int total_runs = 0;
     int total_wickets = 0;
     firstBatsmen->next=firstBatsmen2;
@@ -553,8 +549,8 @@ int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_
 
         newBatsmen1->batsmenIndex=1;
         newBatsmen2->batsmenIndex=2;
-        newBatsmen1->batsmenName="1-Batsman ( " + t4.team_name + " team )";
-        newBatsmen2->batsmenName="2-Batsman ( " + t4.team_name + " team )";
+        newBatsmen1->batsmenName="1 st Batsman ( " + t4.team_name + " team )";
+        newBatsmen2->batsmenName="2 nd Batsman ( " + t4.team_name + " team )";
         firstBatsmen=newBatsmen1;
         firstBatsmen2=newBatsmen2;
         newBatsmen1->isPlaying=true;
@@ -572,7 +568,7 @@ int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_
         {
             firstBowler = newBowler;
             newBowler -> bowlerIndex = 1;
-            newBowler -> bowlerName = "1-Bowler ( " + t4.team_name + " team )";
+            newBowler -> bowlerName = "1 st Bowler ( " + t4.team_name + " team )";
         }
         else
         {
@@ -588,7 +584,7 @@ int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_
                 ptr -> next = newBowler;
                 newBowler -> bowlerIndex = ptr -> bowlerIndex + 1;
                 int index = newBowler -> bowlerIndex;
-                newBowler -> bowlerName = to_string(index) + "-Bowler ( " + t4.team_name + " team )";
+                newBowler -> bowlerName = to_string(index) + " th Bowler ( " + t4.team_name + " team )";
             }
             else
             {
@@ -766,8 +762,8 @@ int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_
 
                     battingIn->batsmenIndex=index + 1;
                     newBatsmen1=battingIn;
-                    newBatsmen2->batsmenName=to_string(newBatsmen2->batsmenIndex) +" - Batsman ( " + t4.team_name + " team )";
-                    newBatsmen1->batsmenName=to_string(newBatsmen1->batsmenIndex) +" - Batsman ( " + t4.team_name + " team )";
+                    newBatsmen2->batsmenName=to_string(newBatsmen2->batsmenIndex) +" th Batsman ( " + t4.team_name + " team )";
+                    newBatsmen1->batsmenName=to_string(newBatsmen1->batsmenIndex) +" th Batsman ( " + t4.team_name + " team )";
                     newBatsmen1->isPlaying=true;
                     newBatsmen2->isPlaying=false;
                     newBatsmen1->isOut=false;
@@ -804,7 +800,7 @@ int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_
 
                     newBatsmen2=battingIn;
                     newBatsmen2->batsmenIndex=index+1;
-                    newBatsmen2->batsmenName=to_string(newBatsmen2->batsmenIndex)+ " - Batsman ( " + t4.team_name + " team )";
+                    newBatsmen2->batsmenName=to_string(newBatsmen2->batsmenIndex)+ " th Batsman ( " + t4.team_name + " team )";
                     newBatsmen1->isPlaying=false;
                     newBatsmen2->isPlaying=true;
                     newBatsmen1->isOut=false;
@@ -816,7 +812,7 @@ int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_
 
             }
 
-
+            usleep(200000);
 
         }
 
@@ -883,7 +879,7 @@ int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_
         {
             break;
         }
-
+        usleep(600000);
     }
 
     firstBowler = NULL;

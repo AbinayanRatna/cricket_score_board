@@ -97,6 +97,11 @@ int main()
     t1.get_teamName("first");
     t2.get_teamName("second");
 
+    cout << "enter number of bowlers in team 1: " << endl;
+    cin >> noOfBowlers1;
+    cout << "enter number of bowlers in team 2: " << endl;
+    cin >> noOfBowlers2;
+
     system("cls");
     srand(time(0));
     int k = (rand() % 60) + 1;
@@ -120,10 +125,6 @@ int main()
 
     }
 
-    cout << "enter number of bowlers in team 1: " << endl;
-    cin >> noOfBowlers1;
-    cout << "enter number of bowlers in team 2: " << endl;
-    cin >> noOfBowlers2;
 
     cout << endl;
     int target_match1, target_match2;
@@ -199,9 +200,6 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
     firstBatsmen->next=firstBatsmen2;
 
     firstBatsmen = NULL;
-    Batsmen currentBatsmen_1 = new BatsmenClass;
-    Batsmen currentBatsmen_2 = new BatsmenClass;
-    Batsmen battingPtr = new BatsmenClass;
 
     Bowler ccheckPtr = new BowlerClass;
     Bowler ptr = new BowlerClass;
@@ -535,9 +533,6 @@ int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_
 
     firstBatsmen = NULL;
 
-    Batsmen currentBatsmen_1 = new BatsmenClass;
-    Batsmen currentBatsmen_2 = new BatsmenClass;
-    Batsmen battingPtr = new BatsmenClass;
     Bowler ccheckPtr = new BowlerClass;
     Bowler ptr = new BowlerClass;
     ptr = NULL;

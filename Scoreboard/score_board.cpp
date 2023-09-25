@@ -84,6 +84,8 @@ public:
 int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_match match);
 int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_match match, int target_runs);
 void target_reveal(int number_of_overs, int target, Cricket_team t3, Cricket_team t4);
+void show_batter_details();
+void show_bowler_details();
 
 int main()
 {
@@ -101,7 +103,6 @@ int main()
     if (k <= 30)
     {
         cout << t1.team_name << " won the toss and chose batting.";
-        // battingNow.team_name=t1.team_name;
         cout << endl << endl << "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" << endl << endl;
         t1.isBatting = true;
         t2.isBatting = false;
@@ -197,11 +198,14 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
 
 
     firstBatsmen = NULL;
+
     Batsmen currentBatsmen_1 = new BatsmenClass;
     Batsmen currentBatsmen_2 = new BatsmenClass;
     Batsmen battingPtr = new BatsmenClass;
 
     Bowler ccheckPtr = new BowlerClass;
+    Bowler ptr = new BowlerClass;
+    ptr = NULL;
     ccheckPtr = NULL;
     Batsmen newBatsmen1 = new BatsmenClass;
     Batsmen newBatsmen2 = new BatsmenClass;
@@ -227,23 +231,14 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
 
         if (firstBowler == NULL)
         {
-            
+            firstBowler = newBowler;
             newBowler -> bowlerIndex = 1;
             newBowler -> bowlerName = "1-Bowler ( " + t4.team_name + " team )";
-            firstBowler = newBowler;
         }
         else
         {
-        	//cout<<"test 1"<<endl;
-			Bowler ptr = new BowlerClass;
-            //cout<<"test 2"<<endl;
-            //ptr=NULL;
-            //cout<<"test 3"<<endl;
-            ptr->next = NULL;
-            //cout<<"test 4"<<endl;
+
             ptr = firstBowler;
-			//cout<<"test 6"<<endl;
-			ptr=firstBowler;
             while (ptr -> next != NULL)
             {
                 ptr = ptr -> next;
@@ -255,7 +250,6 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
                 newBowler -> bowlerIndex = ptr -> bowlerIndex + 1;
                 int index = newBowler -> bowlerIndex;
                 newBowler -> bowlerName = to_string(index) + "-Bowler ( " + t4.team_name + " team )";
-                delete ptr;
             }
             else
             {
@@ -277,7 +271,6 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
 
         for (int j = 1; j <= 6; j++)
         {
-            // cout<<"test5"<<endl;
             cout<<endl;
             if (total_wickets >= 10)
             {
@@ -290,7 +283,6 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
             if (k <= 35)
             {
                 cout << "Run taken this ball : 1 "<<endl;
-                // cout<<"test 1 run"<<endl;
                 sum_runs_per_ball += 1;
                 sum_runs_per_over += sum_runs_per_ball;
                 total_runs += sum_runs_per_ball;
@@ -320,14 +312,12 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
             else if (k > 35 && k <= 55)
             {
                 cout << "Run taken this ball : 0 "<<endl;
-                //cout<<"test 0 run"<<endl;
                 cout<< newBatsmen1->batsmenName<<" : "<<newBatsmen1->totalRunsGot<<" in "<<newBatsmen1->totalBallsFaced<<" ."<<endl;
                 cout<< newBatsmen2->batsmenName<<" : "<<newBatsmen2->totalRunsGot<<" in "<<newBatsmen2->totalBallsFaced<<" ."<<endl;
             }
             else if (k > 55 && k <= 70)
             {
                 cout << "this ball is a wide. Run taken this ball : 1 "<<endl;
-                //cout<<"test wde run"<<endl;
                 sum_runs_per_ball += 1;
                 sum_runs_per_over += sum_runs_per_ball;
                 total_runs += sum_runs_per_ball;
@@ -357,7 +347,6 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
                 }
                 newBatsmen1->isOut=false;
                 newBatsmen2->isOut=false;
-                //cout<<"test 6 run"<<endl;
                 cout<< newBatsmen1->batsmenName<<" : "<<newBatsmen1->totalRunsGot<<" in "<<newBatsmen1->totalBallsFaced<<" ."<<endl;
                 cout<< newBatsmen2->batsmenName<<" : "<<newBatsmen2->totalRunsGot<<" in "<<newBatsmen2->totalBallsFaced<<" ."<<endl;
             }
@@ -379,7 +368,6 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
                 }
                 newBatsmen1->isOut=false;
                 newBatsmen2->isOut=false;
-                //cout<<"test 4 run"<<endl;
                 cout<< newBatsmen1->batsmenName<<" : "<<newBatsmen1->totalRunsGot<<" in "<<newBatsmen1->totalBallsFaced<<" ."<<endl;
                 cout<< newBatsmen2->batsmenName<<" : "<<newBatsmen2->totalRunsGot<<" in "<<newBatsmen2->totalBallsFaced<<" ."<<endl;
             }
@@ -390,7 +378,6 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
                 total_wickets += sum_wickets_per_ball;
                 sum_wickets_per_over++;
 
-                //cout<< newBatsmen2->batsmenName<<" : "<<newBatsmen2->totalRunsGot<<" in "<<newBatsmen2->totalBallsFaced<<" ."<<endl;
                 if(newBatsmen1->isPlaying==true )
                 {
 
@@ -426,7 +413,6 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
                     newBatsmen2->isPlaying=false;
                     newBatsmen1->isOut=false;
                     newBatsmen2->isOut=false;
-                    // cout<<"test10"<<endl;
 
                 }
                 else if(newBatsmen2->isPlaying==true )
@@ -459,9 +445,7 @@ int show_overs(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_ma
 
                     newBatsmen2=battingIn;
                     newBatsmen2->batsmenIndex=index+1;
-                    //cout<<" newBatsmen2->batsmenIndex"<<newBatsmen2->batsmenIndex<<endl;
                     newBatsmen2->batsmenName=to_string(newBatsmen2->batsmenIndex)+ " - Batsman ( " + t4.team_name + " team )";
-                    //cout<<"test74"<<endl;
                     newBatsmen1->isPlaying=false;
                     newBatsmen2->isPlaying=true;
                     newBatsmen1->isOut=false;
@@ -558,11 +542,6 @@ int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_
     Batsmen currentBatsmen_1 = new BatsmenClass;
     Batsmen currentBatsmen_2 = new BatsmenClass;
     Batsmen battingPtr = new BatsmenClass;
-    //Batsmen battingIn = new BatsmenClass;
-
-    // battingIn=NULL;
-    //battingIn->batsmenIndex=0;
-
     Bowler ccheckPtr = new BowlerClass;
     Bowler ptr = new BowlerClass;
     ptr = NULL;
@@ -578,7 +557,6 @@ int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_
         newBatsmen2->batsmenName="2-Batsman ( " + t4.team_name + " team )";
         firstBatsmen=newBatsmen1;
         firstBatsmen2=newBatsmen2;
-        // newBatsmen2->next=battingIn;
         newBatsmen1->isPlaying=true;
     }
 
@@ -632,7 +610,6 @@ int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_
 
         for (int j = 1; j <= 6; j++)
         {
-            // cout<<"test5"<<endl;
             cout<<endl;
             if (total_wickets >= 10)
             {
@@ -645,7 +622,6 @@ int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_
             if (k <= 35)
             {
                 cout << "Run taken this ball : 1 "<<endl;
-                // cout<<"test 1 run"<<endl;
                 sum_runs_per_ball += 1;
                 sum_runs_per_over += sum_runs_per_ball;
                 total_runs += sum_runs_per_ball;
@@ -679,7 +655,6 @@ int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_
             else if (k > 35 && k <= 55)
             {
                 cout << "Run taken this ball : 0 "<<endl;
-                //cout<<"test 0 run"<<endl;
                 cout<< newBatsmen1->batsmenName<<" : "<<newBatsmen1->totalRunsGot<<" in "<<newBatsmen1->totalBallsFaced<<" ."<<endl;
                 cout<< newBatsmen2->batsmenName<<" : "<<newBatsmen2->totalRunsGot<<" in "<<newBatsmen2->totalBallsFaced<<" ."<<endl;
                 if (total_runs > target_runs)
@@ -690,7 +665,6 @@ int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_
             else if (k > 55 && k <= 70)
             {
                 cout << "this ball is a wide. Run taken this ball : 1 "<<endl;
-                //cout<<"test wde run"<<endl;
                 sum_runs_per_ball += 1;
                 sum_runs_per_over += sum_runs_per_ball;
                 total_runs += sum_runs_per_ball;
@@ -724,7 +698,6 @@ int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_
                 }
                 newBatsmen1->isOut=false;
                 newBatsmen2->isOut=false;
-                //cout<<"test 6 run"<<endl;
                 cout<< newBatsmen1->batsmenName<<" : "<<newBatsmen1->totalRunsGot<<" in "<<newBatsmen1->totalBallsFaced<<" ."<<endl;
                 cout<< newBatsmen2->batsmenName<<" : "<<newBatsmen2->totalRunsGot<<" in "<<newBatsmen2->totalBallsFaced<<" ."<<endl;
                 if (total_runs > target_runs)
@@ -750,7 +723,6 @@ int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_
                 }
                 newBatsmen1->isOut=false;
                 newBatsmen2->isOut=false;
-                //cout<<"test 4 run"<<endl;
                 cout<< newBatsmen1->batsmenName<<" : "<<newBatsmen1->totalRunsGot<<" in "<<newBatsmen1->totalBallsFaced<<" ."<<endl;
                 cout<< newBatsmen2->batsmenName<<" : "<<newBatsmen2->totalRunsGot<<" in "<<newBatsmen2->totalBallsFaced<<" ."<<endl;
                 if (total_runs > target_runs)
@@ -765,7 +737,6 @@ int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_
                 total_wickets += sum_wickets_per_ball;
                 sum_wickets_per_over++;
 
-                //cout<< newBatsmen2->batsmenName<<" : "<<newBatsmen2->totalRunsGot<<" in "<<newBatsmen2->totalBallsFaced<<" ."<<endl;
                 if(newBatsmen1->isPlaying==true )
                 {
 
@@ -801,7 +772,6 @@ int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_
                     newBatsmen2->isPlaying=false;
                     newBatsmen1->isOut=false;
                     newBatsmen2->isOut=false;
-                    // cout<<"test10"<<endl;
 
                 }
                 else if(newBatsmen2->isPlaying==true )
@@ -834,9 +804,7 @@ int show_overs_2(int number_of_overs, Cricket_team t3, Cricket_team t4, Cricket_
 
                     newBatsmen2=battingIn;
                     newBatsmen2->batsmenIndex=index+1;
-                    //cout<<" newBatsmen2->batsmenIndex"<<newBatsmen2->batsmenIndex<<endl;
                     newBatsmen2->batsmenName=to_string(newBatsmen2->batsmenIndex)+ " - Batsman ( " + t4.team_name + " team )";
-                    //cout<<"test74"<<endl;
                     newBatsmen1->isPlaying=false;
                     newBatsmen2->isPlaying=true;
                     newBatsmen1->isOut=false;
